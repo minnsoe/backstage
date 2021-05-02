@@ -17,6 +17,7 @@ import { GithubCredentialsProvider } from '@backstage/integration';
 import { GitHubIntegration } from '@backstage/integration';
 import { GitLabIntegration } from '@backstage/integration';
 import * as http from 'http';
+import { JsonValue } from '@backstage/config';
 import { Knex } from 'knex';
 import { Logger } from 'winston';
 import { MergeResult } from 'isomorphic-git';
@@ -62,6 +63,19 @@ export class BitbucketUrlReader implements UrlReader {
     // (undocumented)
     toString(): string;
 }
+
+// @public
+export interface CacheClient {
+    delete(key: string): Promise<void>;
+    get(key: string): Promise<JsonValue>;
+    set(key: string, value: JsonValue, ttl?: number): Promise<void>;
+}
+
+// @public
+export class CacheManager {
+    forPlugin(pluginId: string): PluginCacheManager;
+    static fromConfig(config: Config): CacheManager;
+    }
 
 // @public (undocumented)
 export const coloredFormat: Format;
@@ -223,6 +237,11 @@ export function loadBackendConfig(options: Options): Promise<Config>;
 
 // @public
 export function notFoundHandler(): RequestHandler;
+
+// @public
+export type PluginCacheManager = {
+    getClient: (ttl: number) => CacheClient;
+};
 
 // @public
 export interface PluginDatabaseManager {
