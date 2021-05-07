@@ -1,5 +1,13 @@
 # @backstage/plugin-scaffolder-backend
 
+## 0.11.1
+
+### Patch Changes
+
+- fd39d4662: Move `jest-when` to the dev dependencies
+- Updated dependencies [10c008a3a]
+  - @backstage/catalog-model@0.7.9
+
 ## 0.11.0
 
 ### Minor Changes
@@ -15,63 +23,69 @@
   +   DockerContainerRunner,
   +   SingleHostDiscovery,
   + } from '@backstage/backend-common';
-
-
-    export default async function createPlugin({
-      logger,
-      config,
-      database,
-      reader,
-    }: PluginEnvironment): Promise<Router> {
-  +   const dockerClient = new Docker();
-  +   const containerRunner = new DockerContainerRunner({ dockerClient });
-
-  +   const cookiecutterTemplater = new CookieCutter({ containerRunner });
-  -   const cookiecutterTemplater = new CookieCutter();
-  +   const craTemplater = new CreateReactAppTemplater({ containerRunner });
-  -   const craTemplater = new CreateReactAppTemplater();
-      const templaters = new Templaters();
-
-      templaters.register('cookiecutter', cookiecutterTemplater);
-      templaters.register('cra', craTemplater);
-
-      const preparers = await Preparers.fromConfig(config, { logger });
-      const publishers = await Publishers.fromConfig(config, { logger });
-
-  -   const dockerClient = new Docker();
-
-      const discovery = SingleHostDiscovery.fromConfig(config);
-      const catalogClient = new CatalogClient({ discoveryApi: discovery });
-
-      return await createRouter({
-        preparers,
-        templaters,
-        publishers,
-        logger,
-        config,
-  -     dockerClient,
-        database,
-        catalogClient,
-        reader,
-      });
-    }
   ```
+
+  export default async function createPlugin({
+  logger,
+  config,
+  database,
+  reader,
+  }: PluginEnvironment): Promise<Router> {
+
+- const dockerClient = new Docker();
+- const containerRunner = new DockerContainerRunner({ dockerClient });
+
+- const cookiecutterTemplater = new CookieCutter({ containerRunner });
+
+* const cookiecutterTemplater = new CookieCutter();
+
+- const craTemplater = new CreateReactAppTemplater({ containerRunner });
+
+* const craTemplater = new CreateReactAppTemplater();
+  const templaters = new Templaters();
+
+  templaters.register('cookiecutter', cookiecutterTemplater);
+  templaters.register('cra', craTemplater);
+
+  const preparers = await Preparers.fromConfig(config, { logger });
+  const publishers = await Publishers.fromConfig(config, { logger });
+
+* const dockerClient = new Docker();
+
+  const discovery = SingleHostDiscovery.fromConfig(config);
+  const catalogClient = new CatalogClient({ discoveryApi: discovery });
+
+  return await createRouter({
+  preparers,
+  templaters,
+  publishers,
+  logger,
+  config,
+
+*     dockerClient,
+      database,
+      catalogClient,
+      reader,
+  });
+  }
+
+````
 
 ### Patch Changes
 
 - 38ca05168: The default `@octokit/rest` dependency was bumped to `"^18.5.3"`.
 - 69eefb5ae: Fix GithubPR built-in action `credentialsProvider.getCredentials` URL.
-  Adding Documentation for GitHub PR built-in action.
+Adding Documentation for GitHub PR built-in action.
 - 75c8cec39: bump `jsonschema` from 1.2.7 to 1.4.0
 - Updated dependencies [e0bfd3d44]
 - Updated dependencies [38ca05168]
 - Updated dependencies [d8b81fd28]
 - Updated dependencies [d1b1306d9]
-  - @backstage/backend-common@0.7.0
-  - @backstage/integration@0.5.2
-  - @backstage/catalog-model@0.7.8
-  - @backstage/config@0.1.5
-  - @backstage/catalog-client@0.3.11
+- @backstage/backend-common@0.7.0
+- @backstage/integration@0.5.2
+- @backstage/catalog-model@0.7.8
+- @backstage/config@0.1.5
+- @backstage/catalog-client@0.3.11
 
 ## 0.10.1
 
@@ -85,20 +99,20 @@
 
 - 49574a8a3: Fix some `spleling`.
 
-  The `scaffolder-backend` has a configuration schema change that may be breaking
-  in rare circumstances. Due to a typo in the schema, the
-  `scaffolder.github.visibility`, `scaffolder.gitlab.visibility`, and
-  `scaffolder.bitbucket.visibility` did not get proper validation that the value
-  is one of the supported strings (`public`, `internal` (not available for
-  Bitbucket), and `private`). If you had a value that was not one of these three,
-  you may have to adjust your config.
+The `scaffolder-backend` has a configuration schema change that may be breaking
+in rare circumstances. Due to a typo in the schema, the
+`scaffolder.github.visibility`, `scaffolder.gitlab.visibility`, and
+`scaffolder.bitbucket.visibility` did not get proper validation that the value
+is one of the supported strings (`public`, `internal` (not available for
+Bitbucket), and `private`). If you had a value that was not one of these three,
+you may have to adjust your config.
 
 ### Patch Changes
 
 - 84c54474d: Forward user token to scaffolder task for subsequent api requests
 - Updated dependencies [d367f63b5]
 - Updated dependencies [b42531cfe]
-  - @backstage/backend-common@0.6.3
+- @backstage/backend-common@0.6.3
 
 ## 0.9.6
 
@@ -108,14 +122,14 @@
 - 7abec4dbc: Fix for the `file://` protocol check in the `FilePreparer` being too strict, breaking Windows.
 - d840d30bc: Bitbucket server needs username to be set as well as the token or appPassword for the publishing process to work.
 
-  ```yaml
-  integrations:
-    bitbucket:
-      - host: bitbucket.mycompany.com
-        apiBaseUrl: https://bitbucket.mycompany.com/rest/api/1.0
-        token: token
-        username: username
-  ```
+```yaml
+integrations:
+  bitbucket:
+    - host: bitbucket.mycompany.com
+      apiBaseUrl: https://bitbucket.mycompany.com/rest/api/1.0
+      token: token
+      username: username
+````
 
 - b25846562: Enable the JSON parsing of the response from templated variables in the `v2beta1` syntax. Previously if template parameters json strings they were left as strings, they are now parsed as JSON objects.
 

@@ -1,5 +1,11 @@
 # @backstage/core-api
 
+## 0.2.18
+
+### Patch Changes
+
+- 675a569a9: chore: bump `react-use` dependency in all packages
+
 ## 0.2.17
 
 ### Patch Changes

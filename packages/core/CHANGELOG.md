@@ -1,5 +1,15 @@
 # @backstage/core
 
+## 0.7.9
+
+### Patch Changes
+
+- 889d89b6e: Fix state persisted in the URL make search input in the table toolbar lose their
+  focus.
+- 675a569a9: chore: bump `react-use` dependency in all packages
+- Updated dependencies [675a569a9]
+  - @backstage/core-api@0.2.18
+
 ## 0.7.8
 
 ### Patch Changes

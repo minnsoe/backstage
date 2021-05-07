@@ -1,5 +1,13 @@
 # @backstage/plugin-kubernetes-backend
 
+## 0.3.7
+
+### Patch Changes
+
+- f9f9d633d: Add possibility to configure TLS verification for `gke` type clusters
+- Updated dependencies [10c008a3a]
+  - @backstage/catalog-model@0.7.9
+
 ## 0.3.6
 
 ### Patch Changes

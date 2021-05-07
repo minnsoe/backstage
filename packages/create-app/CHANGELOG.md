@@ -1,5 +1,35 @@
 # @backstage/create-app
 
+## 0.3.22
+
+### Patch Changes
+
+- 3be844496: chore: bump `ts-node` versions to 9.1.1
+- Updated dependencies [0b033d07b]
+- Updated dependencies [3be844496]
+- Updated dependencies [10c008a3a]
+- Updated dependencies [81ef1d57b]
+- Updated dependencies [e3fc89df6]
+- Updated dependencies [889d89b6e]
+- Updated dependencies [fd39d4662]
+- Updated dependencies [675a569a9]
+  - @backstage/plugin-explore@0.3.5
+  - @backstage/cli@0.6.11
+  - @backstage/catalog-model@0.7.9
+  - @backstage/plugin-scaffolder@0.9.4
+  - @backstage/core@0.7.9
+  - @backstage/plugin-api-docs@0.4.13
+  - @backstage/plugin-scaffolder-backend@0.11.1
+  - @backstage/integration-react@0.1.2
+  - @backstage/plugin-catalog@0.5.7
+  - @backstage/plugin-catalog-import@0.5.6
+  - @backstage/plugin-github-actions@0.4.6
+  - @backstage/plugin-lighthouse@0.2.16
+  - @backstage/plugin-search@0.3.6
+  - @backstage/plugin-tech-radar@0.3.11
+  - @backstage/plugin-techdocs@0.9.2
+  - @backstage/plugin-user-settings@0.2.10
+
 ## 0.3.21
 
 ### Patch Changes
@@ -75,47 +105,53 @@
   +   DockerContainerRunner,
   +   SingleHostDiscovery,
   + } from '@backstage/backend-common';
-
-
-    export default async function createPlugin({
-      logger,
-      config,
-      database,
-      reader,
-    }: PluginEnvironment): Promise<Router> {
-  +   const dockerClient = new Docker();
-  +   const containerRunner = new DockerContainerRunner({ dockerClient });
-
-  +   const cookiecutterTemplater = new CookieCutter({ containerRunner });
-  -   const cookiecutterTemplater = new CookieCutter();
-  +   const craTemplater = new CreateReactAppTemplater({ containerRunner });
-  -   const craTemplater = new CreateReactAppTemplater();
-      const templaters = new Templaters();
-
-      templaters.register('cookiecutter', cookiecutterTemplater);
-      templaters.register('cra', craTemplater);
-
-      const preparers = await Preparers.fromConfig(config, { logger });
-      const publishers = await Publishers.fromConfig(config, { logger });
-
-  -   const dockerClient = new Docker();
-
-      const discovery = SingleHostDiscovery.fromConfig(config);
-      const catalogClient = new CatalogClient({ discoveryApi: discovery });
-
-      return await createRouter({
-        preparers,
-        templaters,
-        publishers,
-        logger,
-        config,
-  -     dockerClient,
-        database,
-        catalogClient,
-        reader,
-      });
-    }
   ```
+
+  export default async function createPlugin({
+  logger,
+  config,
+  database,
+  reader,
+  }: PluginEnvironment): Promise<Router> {
+
+- const dockerClient = new Docker();
+- const containerRunner = new DockerContainerRunner({ dockerClient });
+
+- const cookiecutterTemplater = new CookieCutter({ containerRunner });
+
+* const cookiecutterTemplater = new CookieCutter();
+
+- const craTemplater = new CreateReactAppTemplater({ containerRunner });
+
+* const craTemplater = new CreateReactAppTemplater();
+  const templaters = new Templaters();
+
+  templaters.register('cookiecutter', cookiecutterTemplater);
+  templaters.register('cra', craTemplater);
+
+  const preparers = await Preparers.fromConfig(config, { logger });
+  const publishers = await Publishers.fromConfig(config, { logger });
+
+* const dockerClient = new Docker();
+
+  const discovery = SingleHostDiscovery.fromConfig(config);
+  const catalogClient = new CatalogClient({ discoveryApi: discovery });
+
+  return await createRouter({
+  preparers,
+  templaters,
+  publishers,
+  logger,
+  config,
+
+*     dockerClient,
+      database,
+      catalogClient,
+      reader,
+  });
+  }
+
+```
 
 - Updated dependencies [e0bfd3d44]
 - Updated dependencies [e0bfd3d44]
@@ -137,25 +173,25 @@
 - Updated dependencies [cdb3426e5]
 - Updated dependencies [d8b81fd28]
 - Updated dependencies [d1b1306d9]
-  - @backstage/plugin-scaffolder-backend@0.11.0
-  - @backstage/backend-common@0.7.0
-  - @backstage/plugin-techdocs-backend@0.8.0
-  - @backstage/plugin-catalog-import@0.5.5
-  - @backstage/plugin-github-actions@0.4.5
-  - @backstage/cli@0.6.10
-  - @backstage/core@0.7.8
-  - @backstage/plugin-catalog-backend@0.8.2
-  - @backstage/theme@0.2.7
-  - @backstage/plugin-tech-radar@0.3.10
-  - @backstage/plugin-scaffolder@0.9.3
-  - @backstage/plugin-techdocs@0.9.1
-  - @backstage/plugin-proxy-backend@0.2.7
-  - @backstage/catalog-model@0.7.8
-  - @backstage/config@0.1.5
-  - @backstage/catalog-client@0.3.11
-  - @backstage/plugin-app-backend@0.3.12
-  - @backstage/plugin-auth-backend@0.3.9
-  - @backstage/plugin-rollbar-backend@0.1.10
+- @backstage/plugin-scaffolder-backend@0.11.0
+- @backstage/backend-common@0.7.0
+- @backstage/plugin-techdocs-backend@0.8.0
+- @backstage/plugin-catalog-import@0.5.5
+- @backstage/plugin-github-actions@0.4.5
+- @backstage/cli@0.6.10
+- @backstage/core@0.7.8
+- @backstage/plugin-catalog-backend@0.8.2
+- @backstage/theme@0.2.7
+- @backstage/plugin-tech-radar@0.3.10
+- @backstage/plugin-scaffolder@0.9.3
+- @backstage/plugin-techdocs@0.9.1
+- @backstage/plugin-proxy-backend@0.2.7
+- @backstage/catalog-model@0.7.8
+- @backstage/config@0.1.5
+- @backstage/catalog-client@0.3.11
+- @backstage/plugin-app-backend@0.3.12
+- @backstage/plugin-auth-backend@0.3.9
+- @backstage/plugin-rollbar-backend@0.1.10
 
 ## 0.3.20
 
@@ -183,18 +219,18 @@
 - Updated dependencies [6eaecbd81]
 - Updated dependencies [23769512a]
 - Updated dependencies [1a142ae8a]
-  - @backstage/plugin-api-docs@0.4.12
-  - @backstage/plugin-github-actions@0.4.4
-  - @backstage/plugin-catalog-import@0.5.4
-  - @backstage/plugin-explore@0.3.4
-  - @backstage/plugin-lighthouse@0.2.15
-  - @backstage/core@0.7.7
-  - @backstage/plugin-scaffolder@0.9.2
-  - @backstage/plugin-catalog@0.5.6
-  - @backstage/plugin-catalog-backend@0.8.1
-  - @backstage/plugin-search@0.3.5
-  - @backstage/plugin-techdocs@0.9.0
-  - @backstage/plugin-scaffolder-backend@0.10.1
+- @backstage/plugin-api-docs@0.4.12
+- @backstage/plugin-github-actions@0.4.4
+- @backstage/plugin-catalog-import@0.5.4
+- @backstage/plugin-explore@0.3.4
+- @backstage/plugin-lighthouse@0.2.15
+- @backstage/core@0.7.7
+- @backstage/plugin-scaffolder@0.9.2
+- @backstage/plugin-catalog@0.5.6
+- @backstage/plugin-catalog-backend@0.8.1
+- @backstage/plugin-search@0.3.5
+- @backstage/plugin-techdocs@0.9.0
+- @backstage/plugin-scaffolder-backend@0.10.1
 
 ## 0.3.19
 
@@ -202,15 +238,15 @@
 
 - ee22773e9: Removed `plugins.ts` from the app, as plugins are now discovered through the react tree.
 
-  To apply this change to an existing app, simply delete `packages/app/src/plugins.ts` along with the import and usage in `packages/app/src/App.tsx`.
+To apply this change to an existing app, simply delete `packages/app/src/plugins.ts` along with the import and usage in `packages/app/src/App.tsx`.
 
-  Note that there are a few plugins that require explicit registration, in which case you would need to keep them in `plugins.ts`. The set of plugins that need explicit registration is any plugin that doesn't have a component extension that gets rendered as part of the app element tree. An example of such a plugin in the main Backstage repo is `@backstage/plugin-badges`. In the case of the badges plugin this is because there is not yet a component-based API for adding context menu items to the entity layout.
+Note that there are a few plugins that require explicit registration, in which case you would need to keep them in `plugins.ts`. The set of plugins that need explicit registration is any plugin that doesn't have a component extension that gets rendered as part of the app element tree. An example of such a plugin in the main Backstage repo is `@backstage/plugin-badges`. In the case of the badges plugin this is because there is not yet a component-based API for adding context menu items to the entity layout.
 
-  If you have plugins that still rely on route registration through the `register` method of `createPlugin`, these need to be kept in `plugins.ts` as well. However, it is recommended to migrate these to export an extensions component instead.
+If you have plugins that still rely on route registration through the `register` method of `createPlugin`, these need to be kept in `plugins.ts` as well. However, it is recommended to migrate these to export an extensions component instead.
 
 - 670acd88e: Fix system diagram card to be on the system page
 
-  To apply the same fix to an existing application, in `EntityPage.tsx` simply move the `<EntityLayout.route>` for the `/diagram` path from the `groupPage` down into the `systemPage` element.
+To apply the same fix to an existing application, in `EntityPage.tsx` simply move the `<EntityLayout.route>` for the `/diagram` path from the `groupPage` down into the `systemPage` element.
 
 - Updated dependencies [94da20976]
 - Updated dependencies [84c54474d]
@@ -236,17 +272,17 @@
 - Updated dependencies [ac6025f63]
 - Updated dependencies [e292e393f]
 - Updated dependencies [479b29124]
-  - @backstage/core@0.7.6
-  - @backstage/plugin-scaffolder-backend@0.10.0
-  - @backstage/cli@0.6.9
-  - @backstage/plugin-scaffolder@0.9.1
-  - @backstage/plugin-catalog-import@0.5.3
-  - @backstage/plugin-rollbar-backend@0.1.9
-  - @backstage/backend-common@0.6.3
-  - @backstage/plugin-catalog@0.5.5
-  - @backstage/plugin-catalog-backend@0.8.0
-  - @backstage/theme@0.2.6
-  - @backstage/plugin-techdocs@0.8.0
+- @backstage/core@0.7.6
+- @backstage/plugin-scaffolder-backend@0.10.0
+- @backstage/cli@0.6.9
+- @backstage/plugin-scaffolder@0.9.1
+- @backstage/plugin-catalog-import@0.5.3
+- @backstage/plugin-rollbar-backend@0.1.9
+- @backstage/backend-common@0.6.3
+- @backstage/plugin-catalog@0.5.5
+- @backstage/plugin-catalog-backend@0.8.0
+- @backstage/theme@0.2.6
+- @backstage/plugin-techdocs@0.8.0
 
 ## 0.3.18
 
@@ -254,30 +290,34 @@
 
 - b49a525ab: Fixing dependency resolution for problematic library `graphql-language-service-interface`.
 
-  This change might not have to be applied to your local installation, however if you run into this error:
+This change might not have to be applied to your local installation, however if you run into this error:
 
-  ```
-  Error: Failed to compile.
-  /tmp/backstage-e2e-uMeycm/test-app/node_modules/graphql-language-service-interface/esm/GraphQLLanguageService.js 100:23
-  Module parse failed: Unexpected token (100:23)
-  You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders
-  |         }
-  |         let customRules = null;
-  >         if (extensions?.customValidationRules &&
-  |             typeof extensions.customValidationRules === 'function') {
-  |             customRules = extensions.customValidationRules(this._graphQLConfig);
-  ```
+```
 
-  You can fix it by adding the following to the root `package.json`.
+Error: Failed to compile.
+/tmp/backstage-e2e-uMeycm/test-app/node_modules/graphql-language-service-interface/esm/GraphQLLanguageService.js 100:23
+Module parse failed: Unexpected token (100:23)
+You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders
+| }
+| let customRules = null;
 
-  ```json
-  ...
-  "resolutions": {
-    "graphql-language-service-interface": "2.8.2",
-    "graphql-language-service-parser": "1.9.0"
-   },
-  ...
-  ```
+>         if (extensions?.customValidationRules &&
+>
+> | typeof extensions.customValidationRules === 'function') {
+> | customRules = extensions.customValidationRules(this.\_graphQLConfig);
+
+````
+
+You can fix it by adding the following to the root `package.json`.
+
+```json
+...
+"resolutions": {
+  "graphql-language-service-interface": "2.8.2",
+  "graphql-language-service-parser": "1.9.0"
+ },
+...
+````
 
 - a360f9478: Expose the catalog-import route as an external route from the scaffolder.
 
