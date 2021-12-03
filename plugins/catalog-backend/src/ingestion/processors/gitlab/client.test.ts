@@ -30,11 +30,12 @@ const MOCK_CONFIG = readGitLabIntegrationConfig(
   }),
 );
 
-const FAKE_PAGED_ENDPOINT = `${MOCK_CONFIG.apiBaseUrl}/some-endpoint`;
+const FAKE_PAGED_ENDPOINT = `/some-endpoint`;
+const FAKE_PAGED_URL = `${MOCK_CONFIG.apiBaseUrl}${FAKE_PAGED_ENDPOINT}`;
 
-function setupFakeFourPageEndpoint(srv: SetupServerApi, endpoint: string) {
+function setupFakeFourPageURL(srv: SetupServerApi, url: string) {
   srv.use(
-    rest.get(endpoint, (req, res, ctx) => {
+    rest.get(url, (req, res, ctx) => {
       const page = req.url.searchParams.get('page');
       const currentPage = page ? Number(page) : 1;
       const fakePageCount = 4;
@@ -106,7 +107,7 @@ describe('GitLabClient', () => {
   describe('pagedRequest', () => {
     beforeEach(() => {
       // setup fake paginated endpoint with 4 pages each returning one item
-      setupFakeFourPageEndpoint(server, FAKE_PAGED_ENDPOINT);
+      setupFakeFourPageURL(server, FAKE_PAGED_URL);
     });
 
     it('should provide immediate items within the page', async () => {
@@ -157,9 +158,10 @@ describe('GitLabClient', () => {
     });
 
     it('should throw if response is not okay', async () => {
-      const endpoint = `${MOCK_CONFIG.apiBaseUrl}/unhealthy-endpoint`;
+      const endpoint = '/unhealthy-endpoint';
+      const url = `${MOCK_CONFIG.apiBaseUrl}${endpoint}`;
       server.use(
-        rest.get(endpoint, (_, res, ctx) => {
+        rest.get(url, (_, res, ctx) => {
           return res(ctx.status(400), ctx.json({ error: 'some error' }));
         }),
       );
@@ -218,7 +220,7 @@ describe('GitLabClient', () => {
 
 describe('paginated', () => {
   it('should iterate through the pages until exhausted', async () => {
-    setupFakeFourPageEndpoint(server, FAKE_PAGED_ENDPOINT);
+    setupFakeFourPageURL(server, FAKE_PAGED_URL);
     const client = new GitLabClient({
       config: MOCK_CONFIG,
       logger: getVoidLogger(),

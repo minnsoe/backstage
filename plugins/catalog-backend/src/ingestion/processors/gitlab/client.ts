@@ -33,9 +33,7 @@ export class GitLabClient {
   async listProjects(options?: ListOptions): Promise<PagedResponse<any>> {
     if (options?.group) {
       return this.pagedRequest(
-        `${this.config.apiBaseUrl}/groups/${encodeURIComponent(
-          options?.group,
-        )}/projects`,
+        `/groups/${encodeURIComponent(options?.group)}/projects`,
         {
           ...options,
           include_subgroups: true,
@@ -43,7 +41,7 @@ export class GitLabClient {
       );
     }
 
-    return this.pagedRequest(`${this.config.apiBaseUrl}/projects`, options);
+    return this.pagedRequest(`/projects`, options);
   }
 
   /**
@@ -55,14 +53,14 @@ export class GitLabClient {
    * each item from the paged request.
    *
    * @see {@link paginated}
-   * @param endpoint - The complete request URL for the endpoint.
+   * @param endpoint - The request endpoint, e.g. /projects.
    * @param options - Request queryString options which may also include page variables.
    */
   async pagedRequest<T = any>(
     endpoint: string,
     options?: ListOptions,
   ): Promise<PagedResponse<T>> {
-    const request = new URL(endpoint);
+    const request = new URL(`${this.config.apiBaseUrl}${endpoint}`);
     for (const key in options) {
       if (options[key]) {
         request.searchParams.append(key, options[key]!.toString());
