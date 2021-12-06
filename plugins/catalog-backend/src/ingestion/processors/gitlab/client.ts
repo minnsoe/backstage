@@ -114,8 +114,8 @@ export type PagedResponse<T> = {
  * @param request - Function which returns a PagedResponse to walk through.
  * @param options - Initial ListOptions for the request function.
  */
-export async function* paginated(
-  request: (options: ListOptions) => Promise<PagedResponse<any>>,
+export async function* paginated<T = any>(
+  request: (options: ListOptions) => Promise<PagedResponse<T>>,
   options: ListOptions,
 ) {
   let res;
