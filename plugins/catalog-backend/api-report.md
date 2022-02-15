@@ -871,26 +871,6 @@ export class GitLabDiscoveryProcessor implements CatalogProcessor {
   updateLastActivity(): Promise<string | undefined>;
 }
 
-// @alpha
-export class GitLabOrgReaderProcessor implements CatalogProcessor {
-  constructor(options: { integrations: ScmIntegrations; logger: Logger_2 });
-  // (undocumented)
-  static fromConfig(
-    config: Config,
-    options: {
-      logger: Logger_2;
-    },
-  ): GitLabOrgReaderProcessor;
-  // (undocumented)
-  getProcessorName(): string;
-  // (undocumented)
-  readLocation(
-    location: LocationSpec,
-    _optional: boolean,
-    emit: CatalogProcessorEmit,
-  ): Promise<boolean>;
-}
-
 // Warning: (ae-missing-release-tag) "inputError" is exported by the package, but it is missing a release tag (@alpha, @beta, @public, or @internal)
 //
 // @public (undocumented)

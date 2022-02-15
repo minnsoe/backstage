@@ -30,7 +30,6 @@ export { AzureDevOpsDiscoveryProcessor } from './AzureDevOpsDiscoveryProcessor';
 export { GithubOrgReaderProcessor } from './GithubOrgReaderProcessor';
 export { GithubMultiOrgReaderProcessor } from './GithubMultiOrgReaderProcessor';
 export { GitLabDiscoveryProcessor } from './GitLabDiscoveryProcessor';
-export { GitLabOrgReaderProcessor } from './GitLabOrgReaderProcessor';
 export { LocationEntityProcessor } from './LocationEntityProcessor';
 export type { LocationEntityProcessorOptions } from './LocationEntityProcessor';
 export { PlaceholderProcessor } from './PlaceholderProcessor';
